@@ -1,12 +1,8 @@
-from selenium import webdriver
 import time
 from bs4 import BeautifulSoup
 from flask import Flask, render_template
 from flask import request
-# start web browser
 import requests
-browser = webdriver.Firefox()
-
 
 baseUrl = "https://www.universitego.com/bilgisayar-muhendisligi-2020-taban-puanlari-ve-basari-siralamalari/"
 source = requests.get(baseUrl).text
@@ -14,7 +10,6 @@ bolumListesi = []  # bölümler
 
 author = "Serkan Özcan"
 BolumAdı = "Bilgisayar Mühendisliği"
-browser.get(baseUrl)
 
 time.sleep(2)
 
@@ -35,18 +30,12 @@ for bolum in bolumler:
         bolumListesi.append(bolum)
         bolum = {}
 
-
 bolumListesi.pop(0)
 app = Flask(__name__)
-
-
-browser.close()
-
 
 @app.route('/')
 def index(bolumListesi=bolumListesi):
     return render_template('index.html', **locals())
-
 
 @app.route('/sonuc', methods=['POST'])
 def handle_data():
@@ -68,7 +57,4 @@ def handle_data():
 
     return render_template('sonuc.html', puan=puan, bolumListesi=sansliListe)
 
-
 app.run(debug=True)
-print(puan)
-BeautifulSoup
