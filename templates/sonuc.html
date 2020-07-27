@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="Description" content="Enter your description here" />
+    <link
+      rel="stylesheet"
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <title>Title</title>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h4>
+        {{puan}} puan ile kazanabileceğin üniversiteleri senin için listeledik
+        🤙
+      </h4>
+      <div class="row mt-2">
+        <div class="col-12">
+          <table class="table text-center">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">
+                  Üniversite
+                </th>
+                <th scope="col">
+                  Bölüm Adı
+                </th>
+                <th scope="col">
+                  Puan Türü
+                </th>
+                <th scope="col">
+                  Kontenjan
+                </th>
+                <th scope="col">
+                  Taban Puan
+                </th>
+                <th scope="col">
+                  Başarı Sırası
+                </th>
+                <th>Şansın</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in bolumListesi %}
+              <tr>
+                <th>
+                  {{row.universite}}
+                </th>
+                <td>
+                  {{ row.name}}
+                </td>
+                <td>
+                  {{row.tür}}
+                </td>
+                <td>
+                  {{ row.kontenjan}}
+                </td>
+                <td>
+                  {{ row.tabanPuan}}
+                </td>
+                <td>
+                  {{row.basariSirasi}}
+                </td>
+                <td class="text-center" style="font-size: 30px;">
+                  {{row.sans}}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
