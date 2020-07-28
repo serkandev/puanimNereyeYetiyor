@@ -1,7 +1,6 @@
 import time
 from bs4 import BeautifulSoup
-from flask import Flask, render_template
-from flask import request
+from flask import Flask, render_template, request
 import requests
 
 baseUrl = "https://www.universitego.com/bilgisayar-muhendisligi-2020-taban-puanlari-ve-basari-siralamalari/"
