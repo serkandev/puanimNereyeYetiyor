@@ -21,6 +21,7 @@
       <div class="row mt-5">
         <div class="col-5 mx-auto">
           <div class="card">
+           
             <div
               class="card-header text-center bg-dark text-white"
               style="font-size: 20px;"
@@ -28,8 +29,24 @@
               Yks Puanını gir 👇🏻
             </div>
             <div class="card-body">
+              
            <form   action="{{ url_for('handle_data') }}" method="post">
-            <input type="number" step="any" max="500" name="puan" class="form-control" placeholder="353.424" />
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">İstediğin Bölümü Gir 👨🏻‍🚀👩🏻‍🔬</label>
+              <select class="form-control" name="bolum" id="exampleFormControlSelect1">
+                {% for b in joblist %} 
+
+                  <option value='{{b.link}}'>{{b.name}}</option>
+              {%endfor%} 
+              </select>
+            </div>
+           <div class="form-group">
+            <label class="w-100">
+              Yks Puanını Gir 👨🏻‍🚀👩🏻‍🔬
+              <input type="number" step="any" max="550" name="puan" class="form-control" placeholder="353.424" />
+             </label>
+           </div>
+           
             <button  class="btn btn-block btn-primary type="submit">Gönder</button>
            </form>
             </div>

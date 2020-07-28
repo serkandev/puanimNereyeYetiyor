@@ -3,57 +3,85 @@ from bs4 import BeautifulSoup
 from flask import Flask, render_template, request
 import requests
 
-baseUrl = "https://www.universitego.com/bilgisayar-muhendisligi-2020-taban-puanlari-ve-basari-siralamalari/"
-source = requests.get(baseUrl).text
-bolumListesi = []  # bölümler
 
-author = "Serkan Özcan"
-BolumAdı = "Bilgisayar Mühendisliği"
+baseUrl = "https://tercihgo.com/2020-4-yillik-bolumlerin-taban-puanlari-ve-basari-siralamalari"
 
-time.sleep(2)
 
-soup = BeautifulSoup(source, 'html.parser')
-bolumler = soup.find_all("tr")
+def getJobList(bolumlerUrl):
+    JobSource = requests.get(bolumlerUrl).text
+    JobList = []
+    soup = BeautifulSoup(JobSource, 'html.parser')
+    JobNames = soup.find_all("a", {'style': "color: #ff6600;"})
+    for job in JobNames:
+        j = {}
+        j['name'] = ((job).text).replace('2020 Taban Puanları', "")
+        j['link'] = job.get('href')
+        JobList.append(j)
+        j = {}
 
-for bolum in bolumler:
-    bolum_td = bolum.find_all("td")
-    if(len(bolum_td) == 6):
-        bolum = {}
-        bolum['universite'] = (bolum_td[0].string)
-        bolum['name'] = (bolum_td[1].string)
-        bolum['tür'] = (bolum_td[2].string)
-        bolum['kontenjan'] = (bolum_td[3].string)
-        bolum['tabanPuan'] = (bolum_td[4].string)
-        bolum['basariSirasi'] = (bolum_td[5].string)
-        bolum['sans'] = " "
-        bolumListesi.append(bolum)
-        bolum = {}
+    return(JobList)
 
-bolumListesi.pop(0)
+
+jobList = (getJobList(baseUrl))
+
+
 app = Flask(__name__)
 
+
 @app.route('/')
-def index(bolumListesi=bolumListesi):
+def index(joblist=jobList):
     return render_template('index.html', **locals())
+
 
 @app.route('/sonuc', methods=['POST'])
 def handle_data():
-    puan = request.form['puan']
+    puan = float(request.form['puan'])
+    bolum = request.form['bolum']
+    source = requests.get(bolum).text
+    soup = BeautifulSoup(source, 'html.parser')
+    bolumler = soup.find_all("tr")
+    bolumListesi = []
+
+    for info in bolumler:
+        bolum_data = info.find_all("td")
+        if(len(bolum_data) == 6):
+            bolum = {}
+            bolum['univercity'] = (bolum_data[0]).string
+            bolum['job'] = bolum_data[1].string
+            bolum['type'] = bolum_data[2].string
+            bolum["quota"] = bolum_data[3].string
+            bolum['base_score'] = bolum_data[4].string
+            bolum['placement'] = bolum_data[5].string
+            bolum['luck'] = ""
+            bolum['bg'] = ""
+            bolumListesi.append(bolum)
+            bolum = {}
+
+    bolumListesi.pop(0)
     sansliListe = []
+
     for b in bolumListesi:
-        print(b['tabanPuan'])
-        if(b['tabanPuan'] == "Dolmadı"):
+        if(b['base_score'] == "Dolmadı"):
             sansliListe.append(b)
-            b['sans'] = "🧐"
+            b['luck'] = "🥶"
+            b['bg'] = "bg-secondary"
         else:
-            b['tabanPuan'] = ((b['tabanPuan'].replace(",", ".")))
-            if(b['tabanPuan'] != "Dolmadı" and (float(puan) < float(b['tabanPuan']))):
-                b['sans'] = "😔"
+            b['base_score'] = float((b['base_score'].replace(",", ".")))
+            if(b['base_score'] != "Dolmadı" and (puan < b['base_score'])):
+                diffrence = b['base_score'] - puan
+                if(diffrence <= 25):
+                    b['luck'] = "🤔"
+                    b['bg'] = "bg-primary"
+                else:
+                    b['luck'] = "🥺"
+                    b['bg'] = "bg-danger"
                 sansliListe.append(b)
-            elif(b['tabanPuan'] != "Dolmadı" and (float(puan) >= float(b['tabanPuan']))):
-                b['sans'] = "🥳"
+            elif(b['base_score'] != "Dolmadı" and puan >= b['base_score']):
+                b['luck'] = "🥳"
+                b['bg'] = "bg-success"
                 sansliListe.append(b)
 
     return render_template('sonuc.html', puan=puan, bolumListesi=sansliListe)
+
 
 app.run(debug=True)
