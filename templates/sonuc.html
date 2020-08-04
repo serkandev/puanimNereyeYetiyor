@@ -1,23 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta name="Description" content="Enter your description here" />
-    <link
-      rel="stylesheet"
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
-    />
+{% extends 'layout.html' %}
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="assets/css/style.css" />
-    <title></title>
-  <style>
+{% block title %}
+Sonuç
+{% endblock title %}
+
+{% block style %}
     .table td, .table th {
       vertical-align:baseline !important;
     }
@@ -25,11 +12,10 @@
     .table thead th {
       vertical-align:bottom !important;
     }
-    
-  </style>
-  </head>
-  <body>
-    <div class="container mt-5">
+{% endblock style %}
+
+{% block body %}
+<div class="container mt-5">
       <h4>
         {{puan}} puan ile kazanabileceğin üniversiteleri senin için listeledik
         🤙
@@ -91,5 +77,4 @@
         </div>
       </div>
     </div>
-  </body>
-</html>
+{% endblock body %}

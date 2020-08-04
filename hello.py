@@ -3,9 +3,10 @@ from bs4 import BeautifulSoup
 from flask import Flask, render_template, request
 import requests
 
+# sıralamaya göre seçeneği lazım bir de
 
 baseUrl = "https://tercihgo.com/2020-4-yillik-bolumlerin-taban-puanlari-ve-basari-siralamalari"
-
+u_url = "https://tercihgo.com/2020-universite-bolumlerin-taban-puanlari-ve-basari-siralamalari"
 
 def getJobList(bolumlerUrl):
     JobSource = requests.get(bolumlerUrl).text
@@ -18,11 +19,12 @@ def getJobList(bolumlerUrl):
         j['link'] = job.get('href')
         JobList.append(j)
         j = {}
-
+    print(JobList)
     return(JobList)
 
 
 jobList = (getJobList(baseUrl))
+u_list = getJobList(u_url)
 
 
 app = Flask(__name__)
@@ -32,6 +34,9 @@ app = Flask(__name__)
 def index(joblist=jobList):
     return render_template('index.html', **locals())
 
+@app.route("/universiteler")
+def universiteler(u_list = u_list):
+    return render_template("universiteler.html", **locals())
 
 @app.route('/sonuc', methods=['POST'])
 def handle_data():
@@ -56,12 +61,18 @@ def handle_data():
             bolum['bg'] = ""
             bolumListesi.append(bolum)
             bolum = {}
-
-    bolumListesi.pop(0)
+    try: # bazıları boş liste döndürüyor üniversiteye göre aramada
+        bolumListesi.pop(0) 
+    except:
+        print("Exception handled.")
     sansliListe = []
 
     for b in bolumListesi:
         if(b['base_score'] == "Dolmadı"):
+            sansliListe.append(b)
+            b['luck'] = "🥶"
+            b['bg'] = "bg-secondary"
+        elif(b['base_score'] == "---"):
             sansliListe.append(b)
             b['luck'] = "🥶"
             b['bg'] = "bg-secondary"

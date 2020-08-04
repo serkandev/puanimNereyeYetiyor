@@ -1,12 +1,11 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-Anasayfa
+Üniversiteye Göre Arama
 {% endblock title %}
 
 {% block body %}
-    <div class="mt-5">
-    <div class="container mt-5">
+<div class="container mt-5">
       <div class="row mt-5">
         <div class="col-5 mx-auto">
           <div class="card">
@@ -21,9 +20,9 @@ Anasayfa
               
            <form   action="{{ url_for('handle_data') }}" method="post">
             <div class="form-group">
-              <label for="exampleFormControlSelect1">İstediğin Bölümü Gir 👨🏻‍🚀👩🏻‍🔬</label>
+              <label for="exampleFormControlSelect1">İstediğin Üniversiteyi Gir 👨🏻‍🚀👩🏻‍🔬</label>
               <select class="form-control" name="bolum" id="exampleFormControlSelect1">
-                {% for b in joblist %} 
+                {% for b in u_list %} 
 
                   <option value='{{b.link}}'>{{b.name}}</option>
               {%endfor%} 
@@ -44,17 +43,4 @@ Anasayfa
       </div>
      
     </div>
-  </div>
 {% endblock body %}
-
-<!-- 
-<header>
-    <nav<
-      class="navbar navbar-expand-lg navbar-light bg-light fixed-top d-block"
-    >
-      <div class="container">
-        <a class="navbar-brand">Puanım nereye yeter?</a>
-      </div>
-    </nav>
-</header> 
--->
