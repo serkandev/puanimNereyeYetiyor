@@ -43,7 +43,6 @@ def handle_data():
     for info in bolumler:
         bolum_data = info.find_all("td")
         if(len(bolum_data) == 6):
-            print(bolum_data[0].string)
             bolumListesi.append({
                     "university": bolum_data[0].string,
                     "job": bolum_data[1].string,
