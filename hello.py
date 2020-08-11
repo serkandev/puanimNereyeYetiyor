@@ -6,7 +6,7 @@ import requests
 baseUrl = "https://tercihgo.com/2020-4-yillik-bolumlerin-taban-puanlari-ve-basari-siralamalari"
 u_url = "https://tercihgo.com/2020-universite-bolumlerin-taban-puanlari-ve-basari-siralamalari"
 
-def getJobList(bolumlerUrl):
+def getJobList(bolumlerUrl: str) -> list:
     JobSource = requests.get(bolumlerUrl).text
     JobList = []
     soup = BeautifulSoup(JobSource, 'html.parser')
